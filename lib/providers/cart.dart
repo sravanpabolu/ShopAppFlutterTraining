@@ -18,7 +18,7 @@ class Cart with ChangeNotifier {
   Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
-    return {...items};
+    return _items ; // {...items}; //this spread operator is giving in cart screen. 
   }
 
   int get itemCount {
