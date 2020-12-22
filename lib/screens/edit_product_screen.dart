@@ -64,8 +64,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   void _updateImageUrl() {
     if (!_imageURLFocusNode.hasFocus) {
-      if (_imageUrlController.text.isEmpty ||
-          (!_imageUrlController.text.startsWith('http') &&
+      if ((!_imageUrlController.text.startsWith('http') &&
               _imageUrlController.text.startsWith('https')) ||
           (!_imageUrlController.text.endsWith('.png') &&
               !_imageUrlController.text.endsWith('.jpg') &&
@@ -84,7 +83,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _formKey.currentState.save();
 
     if (_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id, _editedProduct);
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }
@@ -222,13 +222,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       focusNode: _imageURLFocusNode,
                       onFieldSubmitted: (_) => _saveForm(),
                       validator: (value) {
-                        if (_imageUrlController.text.isEmpty ||
-                            (!_imageUrlController.text.startsWith('http') &&
-                                _imageUrlController.text.startsWith('https')) ||
-                            (!_imageUrlController.text.endsWith('.png') &&
-                                !_imageUrlController.text.endsWith('.jpg') &&
-                                !_imageUrlController.text.endsWith('.jpeg'))) {
-                          return 'Please enter valid URL';
+                        if (value.isEmpty) {
+                          return 'Please enter an image URL.';
+                        }
+                        if (!value.startsWith('http') &&
+                            !value.startsWith('https')) {
+                          return 'Please enter a valid URL.';
+                        }
+                        if (!value.endsWith('.png') &&
+                            !value.endsWith('.jpg') &&
+                            !value.endsWith('.jpeg')) {
+                          return 'Please enter a valid image URL.';
                         }
                         return null;
                       },
