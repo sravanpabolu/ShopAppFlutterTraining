@@ -66,8 +66,19 @@ class Products with ChangeNotifier {
   //   notifyListeners();
   // }
 
+  Future<void> fetchAndSetProducts() async {
+    const url = "https://myvehicledb.firebaseio.com/products.json";
+
+    try {
+      final response = await http.get(url);
+      print(response.body.toString());
+    } catch (error) {
+      throw (error);
+    }
+  }
+
   Future<void> addProduct(Product product) async {
-    const url = "https://myvehicledb.firebaseio.com/products";
+    const url = "https://myvehicledb.firebaseio.com/products.json";
 
     try {
       final response = await http.post(
