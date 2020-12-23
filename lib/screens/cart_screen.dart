@@ -85,14 +85,14 @@ class _OrderButtonState extends State<OrderButton> {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
+      child: _isLoading ? Center(child: CircularProgressIndicator()) : Text('ORDER NOW'),
       onPressed: (widget.cart.totalAmount <= 0 || _isLoading == true)
       ? null 
       : () async {
         setState(() {
           _isLoading = true;
         });
-        Provider.of<Orders>(context, listen: false).addOrder(
+        await Provider.of<Orders>(context, listen: false).addOrder(
           widget.cart.items.values.toList(),
           widget.cart.totalAmount,
         );
