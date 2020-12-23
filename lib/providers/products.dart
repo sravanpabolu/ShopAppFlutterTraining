@@ -142,7 +142,23 @@ class Products with ChangeNotifier {
   }
 
   void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
+    final url = "https://myvehicledb.firebaseio.com/products/$id";
+    final existingProductIndex =
+        _items.indexWhere((element) => element.id == id);
+    var existingProduct = _items[existingProductIndex];
+
+    http.delete(url).then((response) {
+      print("DELETE REsponse: ");
+      if(response.statusCode >= 400) {
+        
+      };
+      existingProduct = null;
+    }).catchError((error) {
+      print("DELETE Error: $error");
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+    });
+    _items.removeAt(existingProductIndex);
     notifyListeners();
   }
 }
