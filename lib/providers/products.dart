@@ -69,7 +69,8 @@ class Products with ChangeNotifier {
   void addProduct(Product product) {
     const url = "https://myvehicledb.firebaseio.com/products.json";
 
-    http.post(
+    http
+        .post(
       url,
       body: json.encode({
         'title': product.title,
@@ -78,17 +79,20 @@ class Products with ChangeNotifier {
         'imageUrl': product.imageUrl,
         'isFavorite': product.isFavorite,
       }),
-    );
-
-    final newProduct = Product(
+    )
+        .then((response) {
+      print(json.decode(response.body));
+      final newProduct = Product(
         title: product.title,
         description: product.description,
         imageUrl: product.imageUrl,
         price: product.price,
-        id: DateTime.now().toString());
-    _items.add(newProduct);
+        id: json.decode(response.body)['name'],
+      );
+      _items.add(newProduct);
 
-    notifyListeners();
+      notifyListeners();
+    });
   }
 
   void updateProduct(String id, Product newProduct) {
