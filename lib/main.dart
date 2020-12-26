@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app_training/providers/auth.dart';
 import 'package:shop_app_training/providers/cart.dart';
 import 'package:shop_app_training/providers/orders.dart';
 import 'package:shop_app_training/providers/products.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     //register provider
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Auth()),
         ChangeNotifierProvider(
           create: (context) => Products(),
         ),
