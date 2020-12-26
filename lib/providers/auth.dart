@@ -8,11 +8,10 @@ class Auth with ChangeNotifier {
   DateTime _expiryDate;
   String _userId;
 
-  Future<void> signup(String email, String password) async {
-    print("SIGN UP : email - $email, password - $password");
-
-    const url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyChf-lwLlMOqdRDi8ueYGBEj2Iy5PB5yIQ';
+  Future<void> _authenticate(
+      String email, String password, String urlSegment) async {
+    final url =
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyChf-lwLlMOqdRDi8ueYGBEj2Iy5PB5yIQ';
 
     final response = await http.post(
       url,
@@ -24,7 +23,49 @@ class Auth with ChangeNotifier {
         },
       ),
     );
-    print("SIGNUP RESPONSE: ");
+    print("AUTH RESPONSE: ");
     print(json.decode(response.body));
+  }
+
+  Future<void> signup(String email, String password) async {
+    print("SIGN UP : email - $email, password - $password");
+
+    return _authenticate(email, password, 'signUp');
+
+    // const url =
+    //     'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyChf-lwLlMOqdRDi8ueYGBEj2Iy5PB5yIQ';
+
+    // final response = await http.post(
+    //   url,
+    //   body: json.encode(
+    //     {
+    //       'email': email,
+    //       'password': password,
+    //       'returnSecureToken': true,
+    //     },
+    //   ),
+    // );
+    // print("SIGNUP RESPONSE: ");
+    // print(json.decode(response.body));
+  }
+
+  Future<void> login(String email, String password) async {
+    print("SIGN IN : email - $email, password - $password");
+    return _authenticate(email, password, 'signInWithPassword');
+    // const url =
+    //     'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyChf-lwLlMOqdRDi8ueYGBEj2Iy5PB5yIQ';
+
+    // final response = await http.post(
+    //   url,
+    //   body: json.encode(
+    //     {
+    //       'email': email,
+    //       'password': password,
+    //       'returnSecureToken': true,
+    //     },
+    //   ),
+    // );
+    // print("SIGN IN RESPONSE: ");
+    // print(json.decode(response.body));
   }
 }
