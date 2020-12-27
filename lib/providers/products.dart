@@ -71,8 +71,9 @@ class Products with ChangeNotifier {
   // }
 
   Future<void> fetchAndSetProducts() async {
-    final url = "https://myvehicledb.firebaseio.com/products.json?auth=$authToken";
-    
+    final url =
+        "https://myvehicledb.firebaseio.com/products.json?auth=$authToken";
+
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -98,7 +99,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    const url = "https://myvehicledb.firebaseio.com/products.json";
+    final url =
+        "https://myvehicledb.firebaseio.com/products.json?auth=$authToken";
 
     try {
       final response = await http.post(
@@ -129,7 +131,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((element) => element.id == id);
     if (prodIndex >= 0) {
-      final url = "https://myvehicledb.firebaseio.com/products/$id.json";
+      final url = "https://myvehicledb.firebaseio.com/products/$id.json?auth=$authToken";
       try {
         await http.patch(url,
             body: json.encode({
@@ -149,7 +151,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = "https://myvehicledb.firebaseio.com/products/$id.json";
+    final url = "https://myvehicledb.firebaseio.com/products/$id.json?auth=$authToken";
     final existingProductIndex =
         _items.indexWhere((element) => element.id == id);
     var existingProduct = _items[existingProductIndex];
