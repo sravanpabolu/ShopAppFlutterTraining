@@ -25,17 +25,18 @@ class Product with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> toggleFavouriteStatus(String authToken) async {
+  Future<void> toggleFavouriteStatus(String authToken, String userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite;
     notifyListeners();
 
-    final url = 'https://myvehicledb.firebaseio.com/products/$id.json?auth=$authToken';
+    final url =
+        'https://myvehicledb.firebaseio.com/userFavorites/$userId/$id.json?auth=$authToken';
     try {
-      final response = await http.patch(url,
-          body: jsonEncode({
-            'isFavorite': isFavorite,
-          }));
+      final response = await http.put(url,
+          body: jsonEncode(
+            isFavorite,
+          ));
       if (response.statusCode >= 400) {
         _setFavValue(oldStatus);
       }
